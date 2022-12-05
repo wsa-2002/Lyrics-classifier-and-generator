@@ -1,0 +1,28 @@
+[tool.poetry]
+name = "fastapi-backend-template"
+version = "0.1.0"
+description = ""
+authors = ["wsa"]
+readme = "README.md"
+packages = [{include = "fastapi_backend_template"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+fastapi = "0.63.0"
+uvicorn = "^0.20.0"
+asyncpg = "^0.27.0"
+databases = ">=0.4.3,<0.5.0"
+python-dotenv = ">=0.18.0,<0.19.0"
+starlette-context = "^0.3.5"
+PyJWT = "^2.6.0"
+pydantic = "^1.10.2"
+passlib = "^1.7.4"
+argon2-cffi = "^21.3.0"
+aio-pika = "^8.2.5"
+aioboto3 = "^10.2.0"
+python-multipart = "^0.0.5"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
