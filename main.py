@@ -26,22 +26,22 @@ app.add_middleware(
 
 @app.on_event('startup')
 async def app_startup():
-    from config import db_config
-    from persistence.database import pool_handler
-    await pool_handler.initialize(db_config=db_config)
+    pass
 
 
 @app.on_event('shutdown')
 async def app_shutdown():
-    from persistence.database import pool_handler
-    await pool_handler.close()
+    pass
 
 
 import middleware.auth
+
 app.middleware('http')(middleware.auth.middleware)
 
 import starlette_context.middleware
+
 app.add_middleware(starlette_context.middleware.RawContextMiddleware)
 
 import processor.http
+
 processor.http.register_routers(app)

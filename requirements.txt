@@ -1,17 +1,18 @@
 fastapi==0.63.0  # version fixed due to complete re-overriding fastapi objects
 uvicorn
-asyncpg
+asyncpg~=0.27.0
 databases~=0.4.3
 python-dotenv~=0.18.0
 starlette_context
 
-pyjwt
-pydantic
-passlib
+pyjwt~=2.6.0
+pydantic~=1.10.2
+pandas
+passlib~=1.7.4
 argon2-cffi # required for passlib.hash.argon2
 
 aio_pika # amqp
 
-aioboto3 # s3
+aioboto3~=10.2.0
 
 python-multipart # required for fastapi UploadFile
