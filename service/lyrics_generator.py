@@ -1,7 +1,7 @@
 import pickle
 import random
 import re
-from collections import defaultdict
+from collections import defaultdict, Counter
 
 import const
 
@@ -105,6 +105,33 @@ class UserModel(NgramModel):
             self.context = pickle.load(file)
         with open(f'data/{genre}_ngram_counter.pickle', 'rb') as file:
             self.ngram_counter = pickle.load(file)
+
+    def update(self, sentence: str, ratio: int = 10000):
+        print("start updating....")
+        sentences = sentence.split('\n')
+        for sentence in sentences:
+            for ngram in self.get_ngrams(self.tokenize(sentence)):
+                self.ngram_counter[ngram] += ratio
+                prev_words, target_word = ngram
+                self.context[prev_words].extend([target_word] * ratio)
+        print("updated.")
+        return self
+
+
+class Test(NgramModel):
+    def __init__(self, genres, n=const.N):
+        super().__init__(n, init=False)
+        self.load_pickle(genres)
+
+    def load_pickle(self, genres):
+        for genre in genres:
+            with open(f'data/{genre.value}_context.pickle', 'rb') as file:
+                data: dict = pickle.load(file)
+                for prev, now in data.items():
+                    self.context[prev].extend(now)
+            with open(f'data/{genre.value}_ngram_counter.pickle', 'rb') as file:
+                data = pickle.load(file)
+                self.ngram_counter = sum((Counter(item) for item in [self.ngram_counter, data]), Counter())
 
     def update(self, sentence: str, ratio: int = 10000):
         print("start updating....")

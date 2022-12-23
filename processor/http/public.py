@@ -3,8 +3,8 @@ from typing import Sequence
 from fastapi import APIRouter, responses
 
 from base.enums import Genre
-from service.lyrics_classifier import lyrics_classifier
-from service.lyrics_generator import UserModel
+from service.lyrics_classifier import classifier
+from service.lyrics_generator import Test
 
 router = APIRouter(tags=['Public'],
                    default_response_class=responses.JSONResponse)
@@ -17,14 +17,19 @@ async def default_page():
 
 @router.get("/genres-classify")
 async def lyrics_to_genres(lyrics: str):
-    genres = lyrics_classifier(lyrics)
+    genres = classifier.classification(lyrics)
     return genres
 
 
-@router.get("/lyrics-generate")
+@router.post("/lyrics-generate")
 async def lyrics_generator(lyrics: str, genres: Sequence[Genre] = None, lyrics_length: int = 100):
+    """
+    lyrics: user input, used for lyrics generation
+    genres: user input, may be list of genres, if genres is provided, the function will return the lyrics with genres appointed.
+    """
     if not genres:
-        genres = lyrics_classifier(lyrics)
-    generated_lyrics = [UserModel(genre.value).update(lyrics).generate_text(100) for genre in genres]
+        genres = classifier.classification(lyrics)
+    # generated_lyrics = [UserModel(genre.value).update(lyrics).generate_text(lyrics_length) for genre in genres]
+    generated_lyrics = Test(genres).update(lyrics).generate_text(lyrics_length)
     # TODO: which lyric to return?
     return generated_lyrics
