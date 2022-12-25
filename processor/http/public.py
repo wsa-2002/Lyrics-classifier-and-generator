@@ -30,4 +30,4 @@ async def lyrics_generator(lyrics: str, genres: Sequence[Genre] = None, lyrics_l
     if not genres:
         genres = classifier.classification(lyrics)
     generated_lyrics = UserModel(genres).update(lyrics).generate_text(lyrics_length)
-    return generated_lyrics.replace('. ', '\n')
+    return generated_lyrics.replace('. ', '\n').replace(' , ', ', ')
