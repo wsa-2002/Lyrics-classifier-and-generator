@@ -1,3 +1,6 @@
+import random
+import time
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -17,8 +20,8 @@ origins = [
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,
-    allow_credentials=True,
+    allow_origins=["*"],
+    # allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
@@ -26,7 +29,7 @@ app.add_middleware(
 
 @app.on_event('startup')
 async def app_startup():
-    pass
+    random.seed(time.time())
 
 
 @app.on_event('shutdown')

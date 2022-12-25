@@ -4,7 +4,7 @@ from fastapi import APIRouter, responses
 
 from base.enums import Genre
 from service.lyrics_classifier import classifier
-from service.lyrics_generator import Test
+from service.lyrics_generator import UserModel
 
 router = APIRouter(tags=['Public'],
                    default_response_class=responses.JSONResponse)
@@ -29,7 +29,5 @@ async def lyrics_generator(lyrics: str, genres: Sequence[Genre] = None, lyrics_l
     """
     if not genres:
         genres = classifier.classification(lyrics)
-    # generated_lyrics = [UserModel(genre.value).update(lyrics).generate_text(lyrics_length) for genre in genres]
-    generated_lyrics = Test(genres).update(lyrics).generate_text(lyrics_length)
-    # TODO: which lyric to return?
-    return generated_lyrics
+    generated_lyrics = UserModel(genres).update(lyrics).generate_text(lyrics_length)
+    return generated_lyrics.replace('.', '\n')
