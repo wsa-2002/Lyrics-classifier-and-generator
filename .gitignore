@@ -4,3 +4,4 @@ __pycache__
 .DS_Store
 *.csv
 *.pickle
+node_modules
