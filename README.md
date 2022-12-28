@@ -8,12 +8,15 @@ pip install -r requirements.txt
 cp .env.example .env
 ```
 
-paste environment variables
+Paste environment variables, download static files
+from [this link](https://drive.google.com/file/d/1aj02J33QfypAq14BpsJDGmEF75B6xZKr/view?usp=share_link) and put them in
+to `data` folder, then run
 
 ```shell
-pip install uvicorn
 uvicorn main:app --reload
 ```
+
+or you may just run `docker-compose up` to start backend in the docker container.
 
 Go to `localhost:8000/docs` and you will see backend swagger.
 

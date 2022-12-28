@@ -12,16 +12,10 @@ app = FastAPI(
     redoc_url=app_config.redoc_url,
 )
 
-origins = [
-    'http://localhost',
-    'http://localhost:3000',
-    'http://localhost:3006',
-]
-
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
-    # allow_credentials=True,
+    allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
@@ -32,19 +26,14 @@ async def app_startup():
     random.seed(time.time())
 
 
-@app.on_event('shutdown')
-async def app_shutdown():
-    pass
-
-
-import middleware.auth
+import middleware.auth  # noqa E402
 
 app.middleware('http')(middleware.auth.middleware)
 
-import starlette_context.middleware
+import starlette_context.middleware  # noqa E402
 
 app.add_middleware(starlette_context.middleware.RawContextMiddleware)
 
-import processor.http
+import processor.http  # noqa E402
 
 processor.http.register_routers(app)

@@ -17,6 +17,9 @@ async def default_page():
 
 @router.get("/genres-classify")
 async def lyrics_to_genres(lyrics: str):
+    """
+    - lyrics: user input, used for lyrics classification.
+    """
     genres = classifier.classification(lyrics)
     return genres
 
@@ -24,8 +27,9 @@ async def lyrics_to_genres(lyrics: str):
 @router.post("/lyrics-generate")
 async def lyrics_generator(lyrics: str, genres: Sequence[Genre] = None, lyrics_length: int = 100):
     """
-    lyrics: user input, used for lyrics generation
-    genres: user input, may be list of genres, if genres is provided, the function will return the lyrics with genres appointed.
+    - lyrics: user input, used for lyrics generation.
+    - genres: user input, may be list of genres, if genres is provided,
+            the function will return the lyrics with genres appointed.
     """
     if not genres:
         genres = classifier.classification(lyrics)
