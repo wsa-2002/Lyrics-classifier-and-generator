@@ -5,3 +5,6 @@ __pycache__
 *.csv
 *.pickle
 node_modules
+
+.ipynb_checkpoints
+*.ipynb

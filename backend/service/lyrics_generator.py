@@ -6,6 +6,7 @@ from collections import defaultdict, Counter
 import const
 
 
+# This class is modified from https://towardsdatascience.com/text-generation-using-n-gram-model-8d12d9802aa0
 class NgramModel:
     START_TOKEN = '<s>'
 
@@ -34,20 +35,18 @@ class NgramModel:
     def tokenize(text: str):
         for punct in '!?,.~$':
             text = text.replace(punct, f' {punct} ')
-        for special_token in ['(repeat)', *[f"x{i}" for i in range(10)]]:
+        for special_token in ['(repeat)', *[f"x{i}" for i in range(10)]]:  # remove special token e.g. (repeat), x1, x3.
             text = text.replace(special_token, " ")
-        t = [item for item in re.split(r'[ /"@#%^&*()_`:;{}\[\]+-]', text) if item]
-        return t
+        return [item for item in re.split(r'[ /"@#%^&*()_`:;{}\[\]+-]', text) if item]
 
     def get_ngrams(self, tokens: list) -> list:
-        tokens = (self.n - 1) * [self.START_TOKEN] + tokens
-        ngram_list = [(tuple([tokens[i - p - 1] for p in range(self.n - 2, -1, -1)]), tokens[i]) for i in
-                      range(self.n - 1, len(tokens))]
-        return ngram_list
+        tokens = (self.n - 1) * [self.START_TOKEN] + tokens  # padding
+        return [(tuple([tokens[i - p - 1] for p in range(self.n - 2, -1, -1)]), tokens[i]) for i in
+                range(self.n - 1, len(tokens))]
 
     def update(self, sentence: str):
         for ngram in self.get_ngrams(self.tokenize(sentence)):
-            self.ngram_counter[ngram] += 1.0
+            self.ngram_counter[ngram] += 1
             prev_words, target_word = ngram
             self.context[prev_words].append(target_word)
         return self
